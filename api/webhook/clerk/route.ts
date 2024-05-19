@@ -46,6 +46,7 @@ export const POST = async (request: Request) => {
 
     // Activitate Webhook in the Clerk Dashboard.
     // After adding the endpoint, you'll see the secret on the right side.
+    console.log("Env ---> " + process.env.NEXT_CLERK_WEBHOOK_SECRET);
     const wh = new Webhook(process.env.NEXT_CLERK_WEBHOOK_SECRET || "");
 
     let evnt: Event | null = null;
@@ -56,7 +57,10 @@ export const POST = async (request: Request) => {
             heads as IncomingHttpHeaders & WebhookRequiredHeaders
         ) as Event;
     } catch (err) {
-        return NextResponse.json({ message: err }, { status: 400 });
+        return NextResponse.json(
+            { message: err },
+            // { status: 400 }
+        );
     }
 
     const eventType: EventType = evnt?.type!;
@@ -81,12 +85,15 @@ export const POST = async (request: Request) => {
                 created_by
             );
 
-            return NextResponse.json({ message: "User created" }, { status: 201 });
+            return NextResponse.json(
+                { message: "User created" },
+                // { status: 201 }
+            );
         } catch (err) {
             console.log(err);
             return NextResponse.json(
                 { message: "Internal Server Error" },
-                { status: 500 }
+                // { status: 500 }
             );
         }
     }
@@ -101,14 +108,14 @@ export const POST = async (request: Request) => {
 
             return NextResponse.json(
                 { message: "Invitation created" },
-                { status: 201 }
+                // { status: 201 }
             );
         } catch (err) {
             console.log(err);
 
             return NextResponse.json(
                 { message: "Internal Server Error" },
-                { status: 500 }
+                // { status: 500 }
             );
         }
     }
@@ -126,14 +133,14 @@ export const POST = async (request: Request) => {
 
             return NextResponse.json(
                 { message: "Invitation accepted" },
-                { status: 201 }
+                // { status: 201 }
             );
         } catch (err) {
             console.log(err);
 
             return NextResponse.json(
                 { message: "Internal Server Error" },
-                { status: 500 }
+                // { status: 500 }
             );
         }
     }
@@ -149,13 +156,16 @@ export const POST = async (request: Request) => {
             // @ts-ignore
             await removeUserFromCommunity(public_user_data.user_id, organization.id);
 
-            return NextResponse.json({ message: "Member removed" }, { status: 201 });
+            return NextResponse.json(
+                { message: "Member removed" },
+                // { status: 201 }
+            );
         } catch (err) {
             console.log(err);
 
             return NextResponse.json(
                 { message: "Internal Server Error" },
-                { status: 500 }
+                // { status: 500 }
             );
         }
     }
@@ -171,13 +181,16 @@ export const POST = async (request: Request) => {
             // @ts-ignore
             await updateCommunityInfo(id, name, slug, logo_url);
 
-            return NextResponse.json({ message: "Member removed" }, { status: 201 });
+            return NextResponse.json(
+                { message: "Member removed" },
+                // { status: 201 }
+            );
         } catch (err) {
             console.log(err);
 
             return NextResponse.json(
                 { message: "Internal Server Error" },
-                { status: 500 }
+                // { status: 500 }
             );
         }
     }
@@ -195,14 +208,14 @@ export const POST = async (request: Request) => {
 
             return NextResponse.json(
                 { message: "Organization deleted" },
-                { status: 201 }
+                // { status: 201 }
             );
         } catch (err) {
             console.log(err);
 
             return NextResponse.json(
                 { message: "Internal Server Error" },
-                { status: 500 }
+                // { status: 500 }
             );
         }
     }
