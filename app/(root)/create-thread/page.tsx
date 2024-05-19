@@ -1,7 +1,6 @@
 import React from 'react';
 import {currentUser, User} from "@clerk/nextjs/server";
 import {fetchUser} from "@/lib/actions/user.actions";
-import {UserModel} from "@/types";
 import {redirect} from "next/navigation";
 import PostThread from "@/components/forms/PostThread";
 

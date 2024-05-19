@@ -7,31 +7,8 @@ import {FetchUserProps, UpdateParams, UserModel} from "@/types";
 import {parse} from "node:url";
 import Thread from "@/lib/models/thread.model";
 import {FilterQuery} from "mongoose";
+import Community from "@/lib/models/community.model";
 
-export async function updateUser({userId, username, name, bio, image, path}: UpdateParams): Promise<void> {
-    try {
-        await connectToDB();
-        await User.findOneAndUpdate(
-            {id: userId},
-            {
-                username: username.toLowerCase(),
-                name,
-                bio,
-                image,
-                onboarded: true
-            },
-            {
-                upsert: true
-            }
-        );
-    } catch (e: any) {
-        throw new Error(`Failed to create/update user: ${e.message}`)
-    }
-
-    if (path === '/profile/edit') {
-        revalidatePath(path);
-    }
-}
 
 export async function fetchUser(userId: string) {
     try {
@@ -39,13 +16,13 @@ export async function fetchUser(userId: string) {
         let user = await User
             .findOne({
                 id: userId
-            });
-        // console.log(JSON.parse(JSON.stringify(user)));
+            })
+            .populate({
+                path: "communities",
+                model: Community,
+            })
+            .exec();
         return JSON.parse(JSON.stringify(user));
-        // .populate({
-        //     path: 'communities',
-        //     model: Community
-        // })
     } catch (e) {
         throw new Error(`Failed to fetch user : ${e.message}`)
     }
@@ -60,16 +37,24 @@ export async function fetchUserThreads(userId: string) {
             .populate({
                 path: 'threads',
                 model: Thread,
-                populate: {
-                    path: 'children',
-                    model: Thread,
-                    populate: {
-                        path: 'author',
-                        model: User,
-                        select: 'name image id'
-                    }
-                }
-            }).exec();
+                populate: [
+                    {
+                        path: "community",
+                        model: Community,
+                        select: "name id image _id",
+                    },
+                    {
+                        path: "children",
+                        model: Thread,
+                        populate: {
+                            path: "author",
+                            model: User,
+                            select: "name image id",
+                        },
+                    },
+                ],
+            })
+            .exec();
     } catch (e) {
         throw new Error(`Failed to fetch user threads: ${e.message}`)
     }
@@ -164,6 +149,36 @@ export async function getActivity(userId: string) {
         return replies;
     } catch (e) {
         throw new Error(`Failed to fetch user's activity: ${e.message}`)
+    }
+}
+
+
+export async function updateUser({userId, bio, name, path, username, image}: Params): Promise<void> {
+    try {
+        await connectToDB();
+        await User
+            .findOneAndUpdate(
+                {
+                    id: userId
+                },
+                {
+                    username: username.toLowerCase(),
+                    name,
+                    bio,
+                    image,
+                    onboarded: true,
+                },
+                {
+                    upsert: true
+                }
+            )
+            .exec();
+
+        if (path === "/profile/edit") {
+            revalidatePath(path);
+        }
+    } catch (error: any) {
+        throw new Error(`Failed to create/update user: ${error.message}`);
     }
 }
 

@@ -15,9 +15,10 @@ export async function createCommunity(
     username: string,
     image: string,
     bio: string,
-    createdById: string // Change the parameter name to reflect it's an id
+    createdById: string
 ) {
     try {
+        console.log("Now attempting to create community")
         await connectToDB();
         const user = await User
             .findOne(
@@ -40,13 +41,12 @@ export async function createCommunity(
             createdBy: user._id,
         });
 
-        const createdCommunity = await newCommunity.save().exec();
+        const createdCommunity = await newCommunity.save();
         user.communities.push(createdCommunity._id);
-        await user.save().exec();
+        await user.save();
 
         return createdCommunity;
     } catch (error) {
-        // Handle any errors
         console.error("Error creating community:", error);
         throw error;
     }

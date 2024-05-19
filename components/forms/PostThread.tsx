@@ -10,10 +10,13 @@ import {Textarea} from "@/components/ui/textarea";
 import {usePathname, useRouter} from "next/navigation";
 import {createThread} from "@/lib/actions/thread.actions";
 import {fetchUser} from "@/lib/actions/user.actions";
+import {useOrganization} from "@clerk/nextjs";
 
 const PostThread = ({userId}: {userId: string}) => {
     const router = useRouter();
     const pathname = usePathname();
+    const {organization} = useOrganization();
+
     const form = useForm({
         resolver: zodResolver(ThreadValidation),
         defaultValues: {
@@ -27,9 +30,10 @@ const PostThread = ({userId}: {userId: string}) => {
         await createThread({
             text: values.thread,
             author: user._id,
-            communityId: null,
+            communityId: organization ? organization.id : null,
             path: pathname
         });
+
         router.push('/');
     }
 
