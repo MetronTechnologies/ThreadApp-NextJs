@@ -12,9 +12,9 @@ import {Button} from "@/components/ui/button";
 import Image from "next/image";
 import {Textarea} from "@/components/ui/textarea";
 import {isBase64Image} from "@/lib/utils";
-import {useUploadThing} from "@/lib/validations/uploadthing";
 import {updateUser} from "@/lib/actions/user.actions";
 import {usePathname, useRouter} from "next/navigation";
+import {useUploadThing} from "@/lib/validations/uploadThing";
 
 const AccountProfile = ({user, btnTitle}: AccountProfileProps) => {
     const router = useRouter();
