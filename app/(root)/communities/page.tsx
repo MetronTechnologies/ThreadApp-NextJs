@@ -4,9 +4,10 @@ import {redirect} from "next/navigation";
 import UserCard from "@/components/cards/UserCard";
 import {fetchCommunities} from "@/lib/actions/community.actions";
 import CommunityCard from "@/components/cards/CommunityCard";
+import SearchBar from "@/components/shared/SearchBar";
 
 
-const Page = async ({params}: {params: {id: string}}) => {
+const Page = async ({searchParams}: {searchParams: { key: string | undefined }}) => {
 
     const user = await currentUser();
     if (!user) {
@@ -19,7 +20,7 @@ const Page = async ({params}: {params: {id: string}}) => {
     }
 
     const result = await fetchCommunities({
-        searchString: '',
+        searchString: searchParams.key,
         pageNumber: 1,
         pageSize: 25,
         sortBy: "desc"
@@ -29,6 +30,7 @@ const Page = async ({params}: {params: {id: string}}) => {
     return (
         <section>
             <h1 className="head-text mb-10">Search</h1>
+            <SearchBar routeType={'communities'} />
             <div className="mt-14 flex flex-col gap-9">
                 {
                     result.communities.length === 0 ? (

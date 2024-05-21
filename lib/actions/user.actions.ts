@@ -71,11 +71,11 @@ export async function fetchUsers({
     try {
         await connectToDB();
         const skipAmount = (pageNumber - 1) * pageSize
-        const regex = new RegExp(searchString, "i");
+        const regex = new RegExp(searchString!, "i");
         const query: FilterQuery<typeof User> = {
             id: {$ne: userId}
         }
-        if (searchString.trim() !== '') {
+        if (searchString!.trim() !== '') {
             query.$or = [
                 {username: {$regex: regex}},
                 {name: {$regex: regex}}

@@ -89,8 +89,8 @@ export interface ThreadTabProps {
 }
 
 export interface FetchUserProps{
-    userId: string,
-    searchString: string,
+    userId?: string,
+    searchString?: string | undefined,
     pageNumber?: number,
     pageSize: number,
     sortBy: SortOrder
@@ -105,8 +105,8 @@ export interface UserCardProps {
 }
 
 export interface FetchCommunityProps{
-    searchString: string;
-    pageNumber: number;
+    searchString?: string | undefined;
+    pageNumber?: number;
     pageSize: number;
     sortBy: SortOrder;
 }
@@ -128,6 +128,10 @@ export interface CommunityCardProps{
     members: {
         image: string;
     }[];
+}
+
+export interface SearchBarProps {
+    routeType: string
 }
 
 

@@ -163,9 +163,9 @@ export async function fetchCommunities({
     try {
         await connectToDB();
         const skipAmount = (pageNumber - 1) * pageSize;
-        const regex = new RegExp(searchString, "i");
+        const regex = new RegExp(searchString!, "i");
         const query: FilterQuery<typeof Community> = {};
-        if (searchString.trim() !== "") {
+        if (searchString?.trim() !== "") {
             query.$or = [
                 {username: {$regex: regex}},
                 {name: {$regex: regex}},
