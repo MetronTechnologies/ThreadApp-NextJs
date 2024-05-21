@@ -11,7 +11,12 @@ export interface UserProps{
     bio: string;
     id: string;
     objectId: string | undefined;
-    username: string | null | undefined
+    username: string | null | undefined;
+    onboarded: boolean
+}
+
+export interface SingleUserProps{
+    user: UserProps;
 }
 
 export interface UpdateParams{
@@ -103,6 +108,14 @@ export interface FetchCommunityProps{
     pageNumber: number;
     pageSize: number;
     sortBy: SortOrder;
+}
+
+export interface CreateCommunityProps{
+    name: string,
+    username: string,
+    image: string,
+    bio: string,
+    createdById: string
 }
 
 

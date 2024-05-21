@@ -1,6 +1,6 @@
 
-import {ourFileRouter} from "@/api/uploadthing/core";
 import {createNextRouteHandler} from "uploadthing/next";
+import {ourFileRouter} from "@/app/api/uploadthing/core";
 
 
 

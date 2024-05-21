@@ -25,6 +25,11 @@ export const sidebarLinks = [
         label: "Communities",
     },
     {
+        imgURL: "/assets/community.svg",
+        route: "/create-community",
+        label: "Create Communities",
+    },
+    {
         imgURL: "/assets/user.svg",
         route: "/profile",
         label: "Profile",

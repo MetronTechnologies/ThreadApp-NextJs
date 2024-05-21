@@ -7,7 +7,55 @@ import Thread from "../models/thread.model";
 import User from "../models/user.model";
 
 import {connectToDB} from "../mongoose";
-import {FetchCommunityProps} from "@/types";
+import {CreateCommunityProps, FetchCommunityProps} from "@/types";
+import {ObjectId} from "bson";
+
+// export async function createCommunity({name, username, image, bio, createdById}: CreateCommunityProps) {
+//     try {
+//         await connectToDB();
+//         const user = await User
+//             .findOne(
+//                 {
+//                     id: createdById
+//                 }
+//             )
+//             .exec();
+//
+//         if (!user) {
+//             throw new Error("User not found");
+//         }
+//         const createdCommunity = await Community
+//             .findOneAndUpdate(
+//                 {
+//                     id: ''
+//                 },
+//                 {
+//                     name,
+//                     username,
+//                     image,
+//                     bio,
+//                     createdBy: user._id,
+//                 },
+//                 {
+//                     upsert: true
+//                 }
+//             )
+//             .exec();
+//
+//         const communityToUse = await Community
+//             .findOne({username: username})
+//             .exec();
+//         console.log(communityToUse);
+//         user.communities.push(communityToUse._id);
+//         await user.save();
+//
+//         return JSON.parse(JSON.stringify(communityToUse));
+//     } catch (error) {
+//         console.error("Error creating community:", error);
+//         throw error;
+//     }
+// }
+
 
 export async function createCommunity(
     id: string,
@@ -18,18 +66,13 @@ export async function createCommunity(
     createdById: string
 ) {
     try {
-        console.log("Now attempting to create community")
         await connectToDB();
         const user = await User
-            .findOne(
-                {
-                    id: createdById
-                }
-            )
+            .findOne({ id: createdById })
             .exec();
 
         if (!user) {
-            throw new Error("User not found");
+            throw new Error("User not found"); // Handle the case if the user with the id is not found
         }
 
         const newCommunity = new Community({
