@@ -2,7 +2,7 @@ import React from 'react';
 import {ProfileHeaderProps} from "@/types";
 import Image from "next/image";
 
-const ProfileHeader = ({accountId, authUserId, name, username, imgUrl, bio}: ProfileHeaderProps) => {
+const ProfileHeader = ({accountId, authUserId, name, username, imgUrl, bio, type}: ProfileHeaderProps) => {
     return (
         <div className={'flex w-full flex-col justify-start'}>
             <div className="flex items-center justify-between">

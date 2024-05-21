@@ -79,7 +79,8 @@ export interface ProfileHeaderProps{
     name: string,
     username: string,
     imgUrl: string,
-    bio: string
+    bio: string,
+    type?: 'User' | 'Community'
 }
 export interface ThreadTabProps {
     currentUserId: string,
@@ -116,6 +117,17 @@ export interface CreateCommunityProps{
     image: string,
     bio: string,
     createdById: string
+}
+
+export interface CommunityCardProps{
+    id: string;
+    name: string;
+    username: string;
+    imgUrl: string;
+    bio: string;
+    members: {
+        image: string;
+    }[];
 }
 
 
